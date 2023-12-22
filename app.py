@@ -175,7 +175,7 @@ css="""
 </style>
 """
 
-
+st.markdown(css, unsafe_allow_html=True)
 
 def script():
     open_script = """
