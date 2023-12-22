@@ -512,7 +512,7 @@ def chart():
 column1,column2 = tab1.columns(2)
 _,resultbutton,_ = tab5.columns([1,1,1])
 if resultbutton.button(" ", type = "secondary"):
-    tab_result.image(chart(), use_column_width="never")
+    tab_result.image(chart(), use_column_width="always")
     click_element('tab-2')
 
 pop_button = """
