@@ -174,7 +174,7 @@ css="""
     div[id^=tabs-bui][id$=-tabpanel-0] > div > div > div > div > div , div[id^=tabs-bui][id$=-tabpanel-0] > div > div > div > div > div > div {text-align: center; display: block;}
 </style>
 """
-st.markdown(css, unsafe_allow_html=True)
+
 
 
 def script():
