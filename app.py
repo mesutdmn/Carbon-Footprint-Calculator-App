@@ -30,7 +30,7 @@ css="""
     }
     div[data-testid="StyledLinkIconContainer"]> a, div[data-testid="StyledLinkIconContainer"]> a > svg {background-color: rgba(255, 255, 255,0); stroke: rgba(0, 0, 0, 0);}
     #popup {
-            
+            display: none;
             background-color: #fff;
             border: 1px solid #ccc;
             overflow: hidden;
@@ -167,8 +167,8 @@ css="""
     }
     div[data-testid = "stMarkdownContainer"] > p > a {color: rgb(0, 0, 0); text-decoration: none; border: 0px; font-size: 20px; }
     div[data-testid = "stMarkdownContainer"] > p > a:hover:active {border: 1px solid; border-color: rgb(0, 255, 0);}
-    div[data-testid = "stMarkdownContainer"] > p {text-align: center;}
-    div[id^=tabs-bui][id$=-tabpanel-0] > div > div > div > div > div , div[id^=tabs-bui][id$=-tabpanel-0] > div > div > div > div > div > div {text-align: center; display: block;}
+    div[id^=tabs-bui][id$=-tabpanel-2] > div > div > div > div > div > div > div > div > div > div[data-testid = "stMarkdownContainer"] > p {text-align: center;}
+    div[id^=tabs-bui][id$=-tabpanel-2] > div > div > div > div > div > div[id^=tabs-bui][id$=-tabpanel-0] > div > div > div > div > div > div , div[id^=tabs-bui][id$=-tabpanel-2] > div > div > div > div > div[id^=tabs-bui][id$=-tabpanel-0] > div > div > div > div > div > div {text-align: center; display: block;}
 </style>
 """
 st.markdown(css, unsafe_allow_html=True)
