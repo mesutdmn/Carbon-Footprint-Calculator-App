@@ -87,7 +87,7 @@ css="""
     .DidYouKnow_root {
          box-shadow: rgba(77, 131, 132, 0.1) 0px 0px 0.5px 1px, rgba(0, 0, 0, 0.024) 0px 0.5px 0.9px, rgba(0, 0, 0, 0.035) 0px 1.4px 2.5px, rgba(0, 0, 0, 0.04) 0px 3.3px 6px, rgba(0, 0, 0, 0.06) 0px 11px 20px;
          cursor: pointer;
-         padding: 1rem 20px;
+         padding: 0.5rem 20px;
          background: rgb(255, 255, 255);
          border-radius: 2rem;
          margin: 1.75em 0px;
@@ -97,7 +97,7 @@ css="""
     
     
     .TextNew {
-         font-size: 1.2vw;
+         font-size: 20px;
          line-height: 1.5;
     }
     
@@ -110,7 +110,7 @@ css="""
     .DidYouKnow_content {
          color: rgb(14, 17, 23);
          margin-top: 0.5rem;
-         padding: 0px 1.5rem;
+         padding: 0px 1rem;
     } 
     h1,h2,h3,h4 {
         color:rgb(14, 17, 23);
@@ -523,7 +523,7 @@ _,col2,_ = comps.columns([1,10,1])
 col2.markdown(pop_button, unsafe_allow_html=True)
 pop = """
 <div id="popup" class="DidYouKnow_root">
-<p class="DidYouKnow_title TextNew" style="font-size: 1.2vw;"> ❔ Did you know</p>
+<p class="DidYouKnow_title TextNew" style="font-size: 20px;"> ❔ Did you know</p>
     <p id="popupText" class="DidYouKnow_content TextNew"><span>
     Each year, human activities release over 40 billion metric tons of carbon dioxide into the atmosphere, contributing to climate change.
     </span></p>
