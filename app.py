@@ -30,15 +30,10 @@ css="""
     }
     div[data-testid="StyledLinkIconContainer"]> a, div[data-testid="StyledLinkIconContainer"]> a > svg {background-color: rgba(255, 255, 255,0); stroke: rgba(0, 0, 0, 0);}
     #popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, 50%);
-            padding: 10px;
+            
             background-color: #fff;
             border: 1px solid #ccc;
-            z-index: 1000;
+            overflow: hidden;
         }
     .button-17, div[data-testid  = "column"] > div > div> div > div > div > button{
           align-items: center;
@@ -96,13 +91,13 @@ css="""
          background: rgb(255, 255, 255);
          border-radius: 2rem;
          margin: 1.75em 0px;
-         max-width: 1100px;
+         max-width: 1000px;
          overflow: hidden;
     }
     
     
     .TextNew {
-         font-size: 1.5rem;
+         font-size: 1.2vw;
          line-height: 1.5;
     }
     
@@ -146,11 +141,6 @@ css="""
     font-size: 20px;
     font-weight: bold;
     }
-    div[id^=tabs-bui][id$=-tabpanel-2] > div > div > div > div > div[data-testid = "column"] > div > div> div > div > div > button[kind = "secondary"] > div > p
-     {
-    font-size: 60px;
-    margin-bottom: 15px;
-    }
     div[data-baseweb="tooltip"] > div {background-color: rgb(255, 255, 255); border-radius: 2rem; padding: 10px;}
 
     div[id^=tabs-bui][id$=-tabpanel-4] > div > div > div > div > div > div > div> div > div > div > button[kind = "secondary"] 
@@ -168,14 +158,21 @@ css="""
         background-repeat: no-repeat;
         display: block;
     }
+    .icon3 {
+        background: url('https://i.imgur.com/Pp0zAVZ.png');
+        height: 40px;
+        width: 40px;
+        background-repeat: no-repeat;
+        display: block;
+    }
     div[data-testid = "stMarkdownContainer"] > p > a {color: rgb(0, 0, 0); text-decoration: none; border: 0px; font-size: 20px; }
     div[data-testid = "stMarkdownContainer"] > p > a:hover:active {border: 1px solid; border-color: rgb(0, 255, 0);}
     div[data-testid = "stMarkdownContainer"] > p {text-align: center;}
     div[id^=tabs-bui][id$=-tabpanel-0] > div > div > div > div > div , div[id^=tabs-bui][id$=-tabpanel-0] > div > div > div > div > div > div {text-align: center; display: block;}
 </style>
 """
-
 st.markdown(css, unsafe_allow_html=True)
+
 
 def script():
     open_script = """
@@ -218,6 +215,16 @@ def script():
                 var button = window.parent.document.querySelector('div[id^=tabs-bui][id$=-tabpanel-4] > div > div > div > div > div > div > div> div > div > div > button[kind = "secondary"] > div');
         
                 button.appendChild(newDiv);
+            };
+            
+            if (!window.parent.document.querySelector('[class^=icon3]')) {
+                var newDiv2 = document.createElement('span');
+                        
+                newDiv2.className  = 'icon3';
+        
+                var button2 = window.parent.document.querySelector('div[id^=tabs-bui][id$=-tabpanel-2] > div > div > div > div > div > div > div> div > div > div > button[kind = "secondary"] > div');
+        
+                button2.appendChild(newDiv2);
             };
         </script>
         
@@ -508,25 +515,28 @@ if resultbutton.button(" ", type = "secondary"):
     tab_result.image(chart(), use_column_width="never")
     click_element('tab-2')
 
-pop = """
+pop_button = """
 <button id = "button-17" class="button-17" role="button"> ❔ Did You Know</button>
-
+"""
+_,home,_ = comps.columns([1,2,1])
+_,col2,_ = comps.columns([1,10,1])
+col2.markdown(pop_button, unsafe_allow_html=True)
+pop = """
 <div id="popup" class="DidYouKnow_root">
-<p class="DidYouKnow_title TextNew" style="font-weight: 100;"> ❔ Did you know</p>
+<p class="DidYouKnow_title TextNew" style="font-size: 1.2vw;"> ❔ Did you know</p>
     <p id="popupText" class="DidYouKnow_content TextNew"><span>
     Each year, human activities release over 40 billion metric tons of carbon dioxide into the atmosphere, contributing to climate change.
     </span></p>
 </div>
 """
-_,home,_ = comps.columns([1,2,1])
-_,col2,_ = comps.columns([1,2,1])
 col2.markdown(pop, unsafe_allow_html=True)
+
 if home.button("🏡"):
     click_element('tab-0')
 _,resultmid,_ = result.columns([1,2,1])
 
 tab_result.markdown(f"You owe nature <b>{round(prediction / 411.4)}</b> trees monthly. <br> <a href='https://www.egeorman.org.tr/online-bagis-co2.aspx?adet={round(prediction / 411.4)}' id = 'button-17' class='button-17' role='button'> 🌳 Proceed to offset 🌳</a>",  unsafe_allow_html=True)
 
-if resultmid.button("🖩", key="Calculator"):
+if resultmid.button("  ", type="secondary"):
     click_element('tab-1')
 script()
