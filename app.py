@@ -504,7 +504,7 @@ def chart():
     background.paste(piechart, (40, 200), piechart.convert('RGBA'))
     data2 = io.BytesIO()
     background.save(data2, "PNG")
-    background = Image.open(data2).resize((700, 700))
+    background = Image.open(data2).resize((600, 600))
     data3 = io.BytesIO()
     background.save(data3, "PNG")
     return data3
@@ -512,7 +512,7 @@ def chart():
 column1,column2 = tab1.columns(2)
 _,resultbutton,_ = tab5.columns([1,1,1])
 if resultbutton.button(" ", type = "secondary"):
-    tab_result.image(chart(), width=700, use_column_width="auto")
+    tab_result.image(chart(), width=600, use_column_width="auto")
     click_element('tab-2')
 
 pop_button = """
