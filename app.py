@@ -168,9 +168,8 @@ css="""
     div[data-testid = "stMarkdownContainer"] > p > a {color: rgb(0, 0, 0); text-decoration: none; border: 0px; font-size: 20px; }
     div[data-testid = "stMarkdownContainer"] > p > a:hover:active {border: 1px solid; border-color: rgb(0, 255, 0);}
     div[id^=tabs-bui][id$=-tabpanel-2] > div > div > div > div > div > div > div > div > div > div[data-testid = "stMarkdownContainer"] > p {text-align: center;}
-    div[data-testid="stStyledFullScreenFrame"] > div,div[id^=tabs-bui][id$=-tabpanel-2] > div > div > div > div > div > div[id^=tabs-bui][id$=-tabpanel-0] > div > div > div > div > div > div {display: grid;
-    place-items: center;}
-    div[data-testid="stImage"] {max-width: 700px; display: block;}
+    div[data-testid="stStyledFullScreenFrame"] > div,div[id^=tabs-bui][id$=-tabpanel-2] > div > div > div > div > div > div[id^=tabs-bui][id$=-tabpanel-0] > div > div > div > div > div > div {display: grid;    place-items: center;}
+    div[data-testid="stImage"] {max-width: 700px; display: grid;}
 </style>
 """
 st.markdown(css, unsafe_allow_html=True)
@@ -303,8 +302,8 @@ def component():
     else:
         vehicle_km = tab2.slider('What is the monthly distance traveled by the vehicle in kilometers?', 0, 5000, 0, disabled=False)
 
-    air_travel = tab2.selectbox('Frequency of Traveling by Air', ['never', 'rarely', 'frequently', 'very frequently'], help= """
-                                                                                                                             Never: I don't travel by plane.\n
+    air_travel = tab2.selectbox('How often did you fly last month?', ['never', 'rarely', 'frequently', 'very frequently'], help= """
+                                                                                                                             Never: I didn't travel by plane.\n
                                                                                                                              Rarely: Around 1-4 Hours.\n
                                                                                                                              Frequently: Around 5 - 10 Hours.\n
                                                                                                                              Very Frequently: Around 10+ Hours. """)
