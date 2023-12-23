@@ -169,6 +169,7 @@ css="""
     div[data-testid = "stMarkdownContainer"] > p > a:hover:active {border: 1px solid; border-color: rgb(0, 255, 0);}
     div[id^=tabs-bui][id$=-tabpanel-2] > div > div > div > div > div > div > div > div > div > div[data-testid = "stMarkdownContainer"] > p {text-align: center;}
     div[data-testid="stStyledFullScreenFrame"] > div,div[id^=tabs-bui][id$=-tabpanel-2] > div > div > div > div > div > div[id^=tabs-bui][id$=-tabpanel-0] > div > div > div > div > div > div {text-align: center; display: block;}
+    div[data-testid="stImage"] {max-width: 700px; display: block;}
 </style>
 """
 st.markdown(css, unsafe_allow_html=True)
