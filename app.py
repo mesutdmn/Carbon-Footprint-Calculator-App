@@ -168,12 +168,10 @@ if resultmid.button("  ", type="secondary"):
 footer_html = """
     <div style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: rgba(112,170,96,0.7); padding: 10px; display: flex; justify-content: space-between; align-items: center;">
         <div style="display: flex; align-items: center;">
-            <p style="margin: 0; color: rgba(255,255,255,0.8); font-size: 0.4rem;">© 2023 Miuul Carbon Footprint Project.</p>
+            <p style="margin: 0; color: rgba(255,255,255,0.8); font-size: 11px;">© 2023 Miuul Carbon Footprint Project.</p>
         </div>
-        <div style="display: flex; align-items: center; margin-right: 5rem;">
-            <div style="display: flex; align-items: center;">
-                <p style="margin: 0; color: rgba(255,255,255,0.9); font-size:  0.5rem;">Contributors: &nbsp;</p>
-            </div>
+        <div style="display: flex; align-items: center; margin-right: 150px;">
+            <p style="margin: 0; color: rgba(255,255,255,0.9); font-size: 11px;">Contributors: &nbsp;</p>
             <a href="https://www.linkedin.com/in/burhanyildiz" target="_blank" rel="noopener noreferrer">
             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="32" height="32" viewBox="0 0 64 64"> 
             <circle cx="32" cy="32" r="31" fill="#007fb1"></circle>
