@@ -15,7 +15,7 @@ css="""
 <style>
     body {
         
-        background-image: url("https://cdn.dribbble.com/userupload/10094949/file/original-cfb063ae0f42b92b58d8b37642fa67d4.jpg?resize=5739x3227");        background-size: cover;
+        background-image: url("https://i.imgur.com/CSDnxFc.jpg");        background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
         margin: 0;
