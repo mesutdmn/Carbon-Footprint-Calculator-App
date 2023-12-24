@@ -168,7 +168,7 @@ if resultmid.button("  ", type="secondary"):
 footer_html = """
     <div style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: rgba(112,170,96,0.7); padding: 10px; display: flex; justify-content: space-between; align-items: center;">
         <div id="project-copyright" style="display: flex; align-items: center;">
-            <p style="margin: 0; color: rgba(255,255,255,0.8); font-size: 12px;">© 2023 Miuul Carbon Footprint Project.</p>
+            <p style="margin: 0; color: rgba(255,255,255,0.6); font-size: 10px;">© 2023 Miuul Carbon Footprint Project.</p>
         </div>
         <div style="display: flex; align-items: center; margin-right: 130px;">
             <p style="margin: 0; color: rgba(255,255,255,0.9); font-size: 9px; height:16px;">Contributors:&nbsp;</p>
