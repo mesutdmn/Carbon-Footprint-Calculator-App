@@ -163,7 +163,7 @@ tab_result.markdown(f"""You owe nature <b>{tree_count}</b> tree{'s' if tree_coun
 
 if resultmid.button("  ", type="secondary"):
     click_element('tab-1')
-script()
+
 
 footer_html = """
     <div style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: rgba(112,170,96,0.7); padding: 10px; display: flex; justify-content: space-between; align-items: center;">
@@ -189,5 +189,6 @@ footer_html = """
         </div>
     </div>
 """
-
 st.markdown(footer_html, unsafe_allow_html=True)
+
+script()
