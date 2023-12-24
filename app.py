@@ -8,261 +8,34 @@ import pickle
 import io
 import matplotlib.pyplot as plt
 from PIL import Image, ImageDraw, ImageFont
+import base64
+from functions import *
 
 st.set_page_config(layout="wide",page_title="Carbon Footprint Calculator", page_icon="favicon.ico")
+def get_base64(bin_file):
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
 
-css="""
-<style>
-    body {
-        
-        background-image: url("https://i.imgur.com/CSDnxFc.jpg");        background-size: cover;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        }
-    p {
-    color: black;
-    font-family: "Google Sans",Roboto,Arial,sans-serif;
-    font-size: 20px;
-    
-    }
-    div[data-testid="StyledLinkIconContainer"]> a, div[data-testid="StyledLinkIconContainer"]> a > svg {background-color: rgba(255, 255, 255,0); stroke: rgba(0, 0, 0, 0);}
-    #popup {
-            display: none;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            overflow: hidden;
-        }
-    .button-17, div[data-testid  = "column"] > div > div> div > div > div > button{
-          align-items: center;
-          appearance: none;
-          background-color: #fff;
-          border-radius: 24px;
-          border-style: none;
-          box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px,rgba(0, 0, 0, .14) 0 6px 10px 0,rgba(0, 0, 0, .12) 0 1px 18px 0;
-          box-sizing: border-box;
-          color: #3c4043;
-          cursor: pointer;
-          display: inline-flex;
-          fill: currentcolor;
-          font-family: "Google Sans",Roboto,Arial,sans-serif;
-          font-size: 14px;
-          font-weight: 500;
-          height: 48px;
-          justify-content: center;
-          letter-spacing: .25px;
-          line-height: normal;
-          max-width: 100%;
-          overflow: visible;
-          padding: 2px 24px;
-          position: relative;
-          text-align: center;
-          text-transform: none;
-          transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1),opacity 15ms linear 30ms,transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
-          user-select: none;
-          -webkit-user-select: none;
-          touch-action: manipulation;
-          width: auto;
-          will-change: transform,opacity;
-          z-index: 0;
-          margin: 0 auto;
-          
-        }    
-        .button-17, div[data-testid  = "column"] > div > div> div > div > div > button:hover {
-          background: #F6F9FE;
-          color: #174ea6;
-        }
-        
-        .button-17, div[data-testid  = "column"] > div > div> div > div > div > button:active {
-          box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%), 0 8px 12px 6px rgb(60 64 67 / 15%);
-          outline: none;
-        }
-        
-        .button-17, div[data-testid  = "column"] > div > div> div > div > div > button:focus {
-          outline: none;
-          border: 2px solid #4285f4;
-        }
-    .DidYouKnow_root {
-         box-shadow: rgba(77, 131, 132, 0.1) 0px 0px 0.5px 1px, rgba(0, 0, 0, 0.024) 0px 0.5px 0.9px, rgba(0, 0, 0, 0.035) 0px 1.4px 2.5px, rgba(0, 0, 0, 0.04) 0px 3.3px 6px, rgba(0, 0, 0, 0.06) 0px 11px 20px;
-         cursor: pointer;
-         padding: 0.5rem 20px;
-         background: rgb(255, 255, 255);
-         border-radius: 2rem;
-         margin: 1.75em 0px;
-         max-width: 1000px;
-         overflow: hidden;
-    }
-    
-    
-    .TextNew {
-         font-size: 20px;
-         line-height: 1.5;
-    }
-    
-    .DidYouKnow_title {
-         color: rgb(49, 91, 85);
-         margin: 0px;
-         user-select: none;
-    }
-    
-    .DidYouKnow_content {
-         color: rgb(14, 17, 23);
-         margin-top: 0.5rem;
-         padding: 0px 1rem;
-    } 
-    h1,h2,h3,h4 {
-        color:rgb(14, 17, 23);
-        color: inherit; 
-        text-decoration: none; 
-        cursor: default; 
-    }
-    
-    button[data-testid = "baseButton-primary"]{width: 100%;}
-    button[data-testid = "baseButton-secondary"]{width: 100%;}
-    div[data-testid = "stApp"]{background: None; color: black;}
-    div[id^=tabs-bui][id$=-tabpanel-0] > div> div > div > div > div[class = "stMarkdown"] {padding: 20px; border-radius: 2rem; background: rgba(255,255,255,0.7);}
-    div[id^=tabs-bui][id$=-tabpanel-1] > div > div > div > div > div[class = "st-ae"] {padding: 20px; border-radius: 2rem; background: rgba(255,255,255,0.7);}
-    div[id^=tabs-bui][id$=-tabpanel-2] > div > div > div > div > div[class = "st-ae"] {padding: 20px; border-radius: 2rem; background: rgba(255,255,255,0.7);}
-    div[id^=tabs-bui][id$=-tabpanel-2] > div > div > div > div > div > div[id^=tabs-bui][id$=-tabpanel-0] > div> div > div > div > div[class = "stMarkdown"]{background: rgba(255,255,255,0);}
-    div[data-testid  = "column"] > div > div> div > div > div > div >p {text-align: center;}
-    div[data-testid  = "stButton"] {text-align: center;}
-    div[data-testid  = "column"] > div > div> div > div > div > button > div > p {color: black;}
-    div[data-testid  = "column"] > div > div> div > div > div > button[kind = "secondary"] > div > p {font-size: 25px; margin-bottom: 5px}
-    svg[xmlns = "http://www.w3.org/2000/svg"]{stroke: rgba(0, 0, 0, 0.6);}
-    div[data-testid = "stButton"] > button > div > p {color: white; font-size: 15px;}
-    header[data-testid = "stHeader"]{background: rgba(255,255,255,0);}
-    div[data-testid = "stDecoration"]{background: rgba(255,255,255,0);}
-    div[data-baseweb = "tab-border"] {display: none;}
-    
-    div[id^=tabs-bui][id$=-tabpanel-0] > div > div > div > div > div[data-testid = "column"] > div > div> div > div > div > button[kind = "primary"] > div > p
-     {
-    font-size: 20px;
-    font-weight: bold;
-    }
-    div[data-baseweb="tooltip"] > div {background-color: rgb(255, 255, 255); border-radius: 2rem; padding: 10px;}
+background = get_base64("./background_min.jpg")
+icon2 = get_base64("./icon2.png")
+icon3 = get_base64("./icon3.png")
 
-    div[id^=tabs-bui][id$=-tabpanel-4] > div > div > div > div > div > div > div> div > div > div > button[kind = "secondary"] 
-     {
-     background: #6fa861;
-    }
-    div[id^=tabs-bui][id$=-tabpanel-4] > div > div > div > div > div > div > div> div > div > div > button[kind = "secondary"] > div > p  
-     {
-     color: rgb(255, 255, 255);
-    }
-    .icon2 {
-        background: url('https://i.imgur.com/dMDFyZF.png');
-        height: 40px;
-        width: 40px;
-        background-repeat: no-repeat;
-        display: block;
-    }
-    .icon3 {
-        background: url('https://i.imgur.com/Pp0zAVZ.png');
-        height: 40px;
-        width: 40px;
-        background-repeat: no-repeat;
-        display: block;
-    }
-    div[data-testid = "stMarkdownContainer"] > p > a {color: rgb(0, 0, 0); text-decoration: none; border: 0px; font-size: 20px; }
-    div[data-testid = "stMarkdownContainer"] > p > a:hover:active {border: 1px solid; border-color: rgb(0, 255, 0);}
-    div[id^=tabs-bui][id$=-tabpanel-2] > div > div > div > div > div > div > div > div > div > div[data-testid = "stMarkdownContainer"] > p {text-align: center;}
-    div[data-testid="stStyledFullScreenFrame"] > div,div[id^=tabs-bui][id$=-tabpanel-2] > div > div > div > div > div > div[id^=tabs-bui][id$=-tabpanel-0] > div > div > div > div > div > div {display: grid;    place-items: center;}
-    div[data-testid="stImage"] {max-width: 700px; display: grid;}
-</style>
-"""
-st.markdown(css, unsafe_allow_html=True)
-
+with open("style.css", "r") as style:
+    css=f"""<style>{style.read().format(background=background, icon2=icon2, icon3=icon3)}</style>"""
+    st.markdown(css, unsafe_allow_html=True)
 
 def script():
-    open_script = """
-        <script>
-            
-            window.parent.document.getElementById('button-17').addEventListener('click', showPopup);
-            window.parent.document.getElementById('button-17').addEventListener('click', changeText);
-            window.parent.document.getElementById('popup').addEventListener('click', hidePopup);
-            
-            function showPopup() {
-                window.parent.document.getElementById('popup').style.display = 'block';
-                window.parent.document.getElementById('button-17').style.display = 'none';
-            };
-            function hidePopup() {
-                window.parent.document.getElementById('popup').style.display = 'none';
-                window.parent.document.getElementById('button-17').style.display = 'block';
-            };
-            var texts = [
-                "Each year, human activities release over 40 billion tCO₂ into the atmosphere.",
-                "The production of one kilogram of beef is associated with approximately 26 kgCO₂ emissions.",
-                "The transportation sector accounts for nearly 25% of global CO₂ emissions, with the aviation industry being a major contributor.",
-                "Deforestation contributes to about 10% of global carbon emissions, releasing stored carbon in trees into the atmosphere",
-                "Some carbon offset projects, like reforestation initiatives, can sequester up to 20 tCO₂ per acre over several decades.",
-                "Driving an electric vehicle can reduce an individual's carbon footprint by around 50% compared to a conventional gasoline-powered car.",
-                "Approximately 3 kgCO₂ is produced when using 1GB of data, and watching an HD-quality movie on Netflix causes approximately 4.5 kgCO₂ emissions.",
-            ];
-        
-            function changeText() {
-                var randomIndex = Math.floor(Math.random() * texts.length);
-                var newText = texts[randomIndex];
-        
-                window.parent.document.getElementById('popupText').innerHTML = newText;
-            };
-            
-            if (!window.parent.document.querySelector('[class^=icon2]')) {
-                var newDiv = document.createElement('span');
-                        
-                newDiv.className  = 'icon2';
-        
-                var button = window.parent.document.querySelector('div[id^=tabs-bui][id$=-tabpanel-4] > div > div > div > div > div > div > div> div > div > div > button[kind = "secondary"] > div');
-        
-                button.appendChild(newDiv);
-            };
-            
-            if (!window.parent.document.querySelector('[class^=icon3]')) {
-                var newDiv2 = document.createElement('span');
-                        
-                newDiv2.className  = 'icon3';
-        
-                var button2 = window.parent.document.querySelector('div[id^=tabs-bui][id$=-tabpanel-2] > div > div > div > div > div > div > div> div > div > div > button[kind = "secondary"] > div');
-        
-                button2.appendChild(newDiv2);
-            };
-        </script>
-        
-    """
-    html(open_script, width=0, height=0)
+    with open("scripts.js", "r", encoding="utf-8") as scripts:
+        open_script = f"""<script>{scripts.read()}</script> """
+        html(open_script, width=0, height=0)
 
-
-def click_element(element):
-    open_script = f"<script type = 'text/javascript'>window.parent.document.querySelector('[id^=tabs-bui][id$=-{element}]').click();</script>"
-    html(open_script, width=0, height=0)
 
 left, middle, right = st.columns([2,3.5,2])
 main, comps , result = middle.tabs([" ", " ", " "])
 
-main.markdown("""
-# 🌳About Carbon Footprint
-
-A carbon footprint measures the total greenhouse gas emissions linked to an individual, organization, event, or product. It's a crucial metric for gauging our impact on the environment and climate change.
-
-# 🌳Why It Matters
-
-####  🍃Climate Impact
-Reducing your carbon footprint directly contributes to global efforts against climate change, mitigating extreme weather and rising temperatures.
-
-#### 🍃Resource Conservation
-Cutting carbon often means using fewer natural resources, and promoting sustainability in water, energy, and raw materials.
-
-#### 🍃Health and Well-being
-Lowering emissions supports healthier lifestyle choices, improving air quality and physical well-being.
-
-#### 🍃Sustainable Practices
-Measuring and managing your carbon footprint encourages eco-friendly choices, fostering a more sustainable society.
-
-#### 🍃Responsibility
-Acknowledging and addressing your carbon impact demonstrates social and environmental responsibility.
-
-""")
+with open("main.txt", "r", encoding="utf-8") as main_page:
+    main.markdown(f"""{main_page.read()}""")
 
 _,but,_ = main.columns([1,2,1])
 if but.button("Calculate Your Carbon Footprint!", type="primary"):
@@ -351,57 +124,7 @@ def component():
 
 
 df = component()
-
-data = df.copy()
-
-data["Body Type"] = data["Body Type"].map({'underweight':0, 'normal':1, 'overweight':2, 'obese':3})
-data["Sex"] = data["Sex"].map({'female':0, 'male':1})
-data = pd.get_dummies(data, columns=["Diet","Heating Energy Source","Transport","Vehicle Type"], dtype=int)
-data["How Often Shower"] = data["How Often Shower"].map({'less frequently':0, 'daily':1, "twice a day":2, "more frequently":3})
-data["Social Activity"] = data["Social Activity"].map({'never':0, 'sometimes':1, "often":2})
-data["Frequency of Traveling by Air"] = data["Frequency of Traveling by Air"].map({'never':0, 'rarely':1, "frequently":2, "very frequently":3})
-data["Waste Bag Size"] = data["Waste Bag Size"].map({'small':0, 'medium':1, "large":2,  "extra large":3})
-data["Energy efficiency"] = data["Energy efficiency"].map({'No':0, 'Sometimes':1, "Yes":2})
-
-sample = {'Body Type': 2,
- 'Sex': 0,
- 'How Often Shower': 1,
- 'Social Activity': 2,
- 'Monthly Grocery Bill': 230,
- 'Frequency of Traveling by Air': 2,
- 'Vehicle Monthly Distance Km': 210,
- 'Waste Bag Size': 2,
- 'Waste Bag Weekly Count': 4,
- 'How Long TV PC Daily Hour': 7,
- 'How Many New Clothes Monthly': 26,
- 'How Long Internet Daily Hour': 1,
- 'Energy efficiency': 0,
- 'Do You Recyle_Paper': 0,
- 'Do You Recyle_Plastic': 0,
- 'Do You Recyle_Glass': 0,
- 'Do You Recyle_Metal': 1,
- 'Cooking_with_stove': 1,
- 'Cooking_with_oven': 1,
- 'Cooking_with_microwave': 0,
- 'Cooking_with_grill': 0,
- 'Cooking_with_airfryer': 1,
- 'Diet_omnivore': 0,
- 'Diet_pescatarian': 1,
- 'Diet_vegan': 0,
- 'Diet_vegetarian': 0,
- 'Heating Energy Source_coal': 1,
- 'Heating Energy Source_electricity': 0,
- 'Heating Energy Source_natural gas': 0,
- 'Heating Energy Source_wood': 0,
- 'Transport_private': 0,
- 'Transport_public': 1,
- 'Transport_walk/bicycle': 0,
- 'Vehicle Type_None': 1,
- 'Vehicle Type_diesel': 0,
- 'Vehicle Type_electric': 0,
- 'Vehicle Type_hybrid': 0,
- 'Vehicle Type_lpg': 0,
- 'Vehicle Type_petrol': 0}
+data = input_preprocessing(df)
 
 sample_df = pd.DataFrame(data=sample,index=[0])
 sample_df[sample_df.columns] = 0
@@ -411,114 +134,13 @@ ss = pickle.load(open("scale.sav","rb"))
 model = pickle.load(open("model.sav","rb"))
 prediction = round(np.exp(model.predict(ss.transform(sample_df))[0]))
 
-def hesapla():
-    copy_df = sample_df.copy()
-    travels = copy_df[["Frequency of Traveling by Air",
-                         "Vehicle Monthly Distance Km",
-                         'Transport_private',
-                          'Transport_public',
-                          'Transport_walk/bicycle',
-                          'Vehicle Type_None',
-                          'Vehicle Type_diesel',
-                          'Vehicle Type_electric',
-                          'Vehicle Type_hybrid',
-                          'Vehicle Type_lpg',
-                          'Vehicle Type_petrol']]
-    copy_df[list(set(copy_df.columns) - set(travels.columns))] = 0
-    travel = np.exp(model.predict(ss.transform(copy_df)))
-
-    copy_df = sample_df.copy()
-    energys = copy_df[[ 'Heating Energy Source_coal','How Often Shower', 'How Long TV PC Daily Hour',
-                         'Heating Energy Source_electricity','How Long Internet Daily Hour',
-                         'Heating Energy Source_natural gas',
-                         'Cooking_with_stove',
-                          'Cooking_with_oven',
-                          'Cooking_with_microwave',
-                          'Cooking_with_grill',
-                          'Cooking_with_airfryer',
-                         'Heating Energy Source_wood','Energy efficiency']]
-    copy_df[list(set(copy_df.columns) - set(energys.columns))] = 0
-    energy = np.exp(model.predict(ss.transform(copy_df)))
-
-    copy_df = sample_df.copy()
-    wastes = copy_df[[  'Do You Recyle_Paper','How Many New Clothes Monthly',
-                         'Waste Bag Size',
-                         'Waste Bag Weekly Count',
-                         'Do You Recyle_Plastic',
-                         'Do You Recyle_Glass',
-                         'Do You Recyle_Metal',
-                         'Social Activity',]]
-    copy_df[list(set(copy_df.columns) - set(wastes.columns))] = 0
-    waste = np.exp(model.predict(ss.transform(copy_df)))
-
-    copy_df = sample_df.copy()
-    diets = copy_df[[ 'Diet_omnivore',
-                     'Diet_pescatarian',
-                     'Diet_vegan',
-                     'Diet_vegetarian', 'Monthly Grocery Bill','Transport_private',
-                     'Transport_public',
-                     'Transport_walk/bicycle',
-                      'Heating Energy Source_coal',
-                      'Heating Energy Source_electricity',
-                      'Heating Energy Source_natural gas',
-                      'Heating Energy Source_wood',
-                      ]]
-    copy_df[list(set(copy_df.columns) - set(diets.columns))] = 0
-    diet = np.exp(model.predict(ss.transform(copy_df)))
-    hesap = {"Travel": travel[0], "Energy": energy[0], "Waste": waste[0], "Diet": diet[0]}
-
-    return hesap
-def chart():
-    p = hesapla()
-    bbox_props = dict(boxstyle="round", facecolor="white", edgecolor="white", alpha=0.7)
-
-    plt.figure(figsize=(10, 10))
-    patches, texts = plt.pie(x=p.values(),
-                             labels=p.keys(),
-                             explode=[0.03] * 4,
-                             labeldistance=0.75,
-                             colors=["#29ad9f", "#1dc8b8", "#99d9d9", "#b4e3dd" ], shadow=True,
-                             textprops={'fontsize': 20, 'weight': 'bold', "color": "#000000ad"})
-    for text in texts:
-        text.set_horizontalalignment('center')
-        text.set_fontfamily(["cursive"])
-
-    data = io.BytesIO()
-    plt.savefig(data, transparent=True)
-
-    background = Image.open("default.png")
-    draw = ImageDraw.Draw(background)
-    font1 = ImageFont.truetype(font="ArchivoBlack-Regular.ttf", size=50)
-    font = ImageFont.truetype(font="arialuni.ttf", size=50)
-    draw.text(xy=(320, 50), text=f"  How big is your\nCarbon Footprint?", font=font1, fill="#039e8e", stroke_width=1, stroke_fill="#039e8e")
-    draw.text(xy=(370, 250), text=f"Monthly Emission \n\n   {prediction:.0f} kgCO₂e", font=font, fill="#039e8e", stroke_width=1, stroke_fill="#039e8e")
-    data_back = io.BytesIO()
-    background.save(data_back, "PNG")
-    background = Image.open(data_back).convert('RGBA')
-    piechart = Image.open(data)
-    ayak = Image.open("ayak.png").resize((370, 370))
-    bg_width, bg_height = piechart.size
-    ov_width, ov_height = ayak.size
-    x = (bg_width - ov_width) // 2
-    y = (bg_height - ov_height) // 2
-    piechart.paste(ayak, (x, y), ayak.convert('RGBA'))
-    background.paste(piechart, (40, 200), piechart.convert('RGBA'))
-    data2 = io.BytesIO()
-    background.save(data2, "PNG")
-    background = Image.open(data2).resize((700, 700))
-    data3 = io.BytesIO()
-    background.save(data3, "PNG")
-    return data3
-
 column1,column2 = tab1.columns(2)
 _,resultbutton,_ = tab5.columns([1,1,1])
 if resultbutton.button(" ", type = "secondary"):
-    tab_result.image(chart(), use_column_width="auto")
+    tab_result.image(chart(model,ss, sample_df,prediction), use_column_width="auto")
     click_element('tab-2')
 
-pop_button = """
-<button id = "button-17" class="button-17" role="button"> ❔ Did You Know</button>
-"""
+pop_button = """<button id = "button-17" class="button-17" role="button"> ❔ Did You Know</button>"""
 _,home,_ = comps.columns([1,2,1])
 _,col2,_ = comps.columns([1,10,1])
 col2.markdown(pop_button, unsafe_allow_html=True)
