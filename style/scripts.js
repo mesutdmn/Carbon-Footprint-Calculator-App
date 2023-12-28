@@ -52,6 +52,7 @@ function checkScreenWidth() {
 
   if (screenWidth <= 600) {
             window.parent.document.getElementById('project-copyright').style.display = 'none';
+			Array.from(window.parent.document.querySelectorAll('button[data-baseweb="tab"] > div > p')).forEach(button => button.style.fontSize = '10px');
   } else {
             window.parent.document.getElementById('project-copyright').style.display = 'block';
   }
