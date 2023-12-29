@@ -159,7 +159,7 @@ if home.button("🏡"):
 _,resultmid,_ = result.columns([1,2,1])
 
 tree_count = round(prediction / 411.4)
-tab_result.markdown(f"""You owe nature <b>{tree_count}</b> tree{'s' if tree_count > 1 else ''} monthly. <br> {f"<a href='https://www.egeorman.org.tr/online-bagis-co2.aspx?adet={tree_count}' id = 'button-17' class='button-17' role='button'> 🌳 Proceed to offset 🌳</a>" if tree_count > 0 else ""}""",  unsafe_allow_html=True)
+tab_result.markdown(f"""You owe nature <b>{tree_count}</b> tree{'s' if tree_count > 1 else ''} monthly. <br> {f"<a href='https://www.tema.org.tr/en/homepage' id = 'button-17' class='button-17' role='button'> 🌳 Proceed to offset 🌳</a>" if tree_count > 0 else ""}""",  unsafe_allow_html=True)
 
 if resultmid.button("  ", type="secondary"):
     click_element('tab-1')
