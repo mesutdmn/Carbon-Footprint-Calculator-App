@@ -35,7 +35,7 @@ def script():
 left, middle, right = st.columns([2,3.5,2])
 main, comps , result = middle.tabs([" ", " ", " "])
 
-with open("./style/main.txt", "r", encoding="utf-8") as main_page:
+with open("./style/main.md", "r", encoding="utf-8") as main_page:
     main.markdown(f"""{main_page.read()}""")
 
 _,but,_ = main.columns([1,2,1])
@@ -164,7 +164,7 @@ tab_result.markdown(f"""You owe nature <b>{tree_count}</b> tree{'s' if tree_coun
 if resultmid.button("  ", type="secondary"):
     click_element('tab-1')
 
-with open("./style/footer.txt", "r", encoding="utf-8") as footer:
+with open("./style/footer.html", "r", encoding="utf-8") as footer:
     footer_html = f"""{footer.read()}"""
     st.markdown(footer_html, unsafe_allow_html=True)
 
