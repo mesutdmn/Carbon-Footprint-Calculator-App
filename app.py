@@ -32,7 +32,7 @@ def script():
         html(open_script, width=0, height=0)
 
 
-left, middle, right = st.columns([2,3.5,2])
+left, middle, right = st.columns([2,3.5,4])
 main, comps , result = middle.tabs([" ", " ", " "])
 
 with open("./style/main.md", "r", encoding="utf-8") as main_page:
@@ -47,8 +47,8 @@ tab_result,_ = result.tabs([" "," "])
 
 def component():
     tab1col1, tab1col2 = tab1.columns(2)
-    height = tab1col1.number_input("Height",0,251, value=None, placeholder="160", help="in cm")
-    weight = tab1col2.number_input("Weight", 0, 250, value=None, placeholder="75", help="in kg")
+    height = tab1col1.number_input("Height",0,251, value=None, placeholder="151", help="in cm")
+    weight = tab1col2.number_input("Weight", 0, 250, value=None, placeholder="74", help="in kg")
     if (weight is None) or (weight == 0) : weight = 1
     if (height is None) or (height == 0) : height = 1
     calculation = weight / (height/100)**2
@@ -107,8 +107,8 @@ def component():
             'Monthly Grocery Bill': grocery_bill,
             "Frequency of Traveling by Air": air_travel,
             "Vehicle Monthly Distance Km": vehicle_km,
-            "Waste Bag Size": waste_bag,
-            "Waste Bag Weekly Count": waste_count,
+            "Waste Bag ": waste_bag,
+            "Waste Bag Count": waste_count,
             "How Long TV PC Daily Hour": daily_tv_pc,
             "Vehicle Type": vehicle_type,
             "How Many New Clothes Monthly": clothes_monthly,
@@ -154,7 +154,7 @@ pop = """
 """
 col2.markdown(pop, unsafe_allow_html=True)
 
-if home.button("🏡"):
+if home.button("Home"):
     click_element('tab-0')
 _,resultmid,_ = result.columns([1,2,1])
 
